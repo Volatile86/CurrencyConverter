@@ -8,6 +8,7 @@ package currencyconverter;
 
 import java.net.URL;
 import java.util.Iterator;
+import java.net.MalformedURLException; 
  
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
@@ -178,6 +179,15 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
                 new CurrencyConverterUI().setVisible(true);
             }
         });
+        try
+        {
+           URL conversionURL = new URL("http://themoneyconverter.com/rss-feed/AED/rss.xml");
+        }
+        catch(MalformedURLException e)
+         {
+             System.out.print(e);
+         }
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
