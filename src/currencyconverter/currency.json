@@ -1,10 +1,10 @@
-﻿{
+{
     "units": [
         { "CountryCurrency": "United Arab Emirates Dirham", "Units": "AED" },
         { "CountryCurrency": "Argentine Peso", "Units": "ARS" },
         { "CountryCurrency": "Australian Dollar", "Units": "AUD" },
         { "CountryCurrency": "Aruban Florin", "Units": "AWG" },
-        { "CountryCurrency": "Bosnia and Herzegovina convertible mark",        "Units": "BAM" },
+        { "CountryCurrency": "Bosnia and Herzegovina convertible mark", "Units": "BAM" },
         { "CountryCurrency": "Barbadian Dollar", "Units": "BBD" },
         { "CountryCurrency": "Bangladeshi Taka", "Units": "BDT" },
         { "CountryCurrency": " Bulgarian Lev", "Units": "BGN" },

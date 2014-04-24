@@ -9,11 +9,18 @@ package currencyconverter;
 import java.net.URL;
 import java.util.Iterator;
 import java.net.MalformedURLException; 
- 
-import com.sun.syndication.feed.synd.SyndEntry;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
+//import com.sun.syndication.feed.synd.SyndEntry;
+//import com.sun.syndication.feed.synd.SyndFeed;
+//import com.sun.syndication.io.SyndFeedInput;
+//import com.sun.syndication.io.XmlReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 
 /**
  *
@@ -26,7 +33,31 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
      */
     public CurrencyConverterUI() {
         initComponents();
+        JSONParser parser = new JSONParser();
+        jComboBox1.removeAllItems();
+        jComboBox2.removeAllItems();
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+       try
+       {
+       //Was giving me trouble when I was trying to read from a file. It was saying that there was a '`' character at position 0
+       Object obj = parser.parse("{\"units\":[{\"CountryCurrency\":\"United Arab Emirates Dirham\",\"Units\":\"AED\"},{\"CountryCurrency\":\"Argentine Peso\",\"Units\":\"ARS\"},{\"CountryCurrency\":\"Australian Dollar\",\"Units\":\"AUD\"},{\"CountryCurrency\":\"Aruban Florin\",\"Units\":\"AWG\"},{\"CountryCurrency\":\"Bosnia and Herzegovina convertible mark\",\"Units\":\"BAM\"},{\"CountryCurrency\":\"Barbadian Dollar\",\"Units\":\"BBD\"},{\"CountryCurrency\":\"Bangladeshi Taka\",\"Units\":\"BDT\"},{\"CountryCurrency\":\" Bulgarian Lev\",\"Units\":\"BGN\"},{\"CountryCurrency\":\"Bahraini Dinar\",\"Units\":\"BHD\"},{\"CountryCurrency\":\" Bermudian Dollar\",\"Units\":\"BMD\"},{\"CountryCurrency\":\"Bolivian Boliviano\",\"Units\":\"BOB\"},{\"CountryCurrency\":\"Brazilian Real\",\"Units\":\"BRL\"},{\"CountryCurrency\":\"Bahamian Dollar\",\"Units\":\"BSD\"},{\"CountryCurrency\":\"Canadian Dollar\",\"Units\":\"CAD\"},{\"CountryCurrency\":\"Swiss Franc\",\"Units\":\"CHF\"},{\"CountryCurrency\":\"Chilean Peso\",\"Units\":\"CLP\"},{\"CountryCurrency\":\"Chinese Yuan\",\"Units\":\"CNY\"},{\"CountryCurrency\":\"Colombian Peso\",\"Units\":\"COP\"},{\"CountryCurrency\":\"Czech Koruna\",\"Units\":\"CZK\"},{\"CountryCurrency\":\"Danish Krone\",\"Units\":\"DKK\"},{\"CountryCurrency\":\"Dominican Peso\",\"Units\":\"DOP\"},{\"CountryCurrency\":\"Egyptian Pound\",\"Units\":\"EGP\"},{\"CountryCurrency\":\" Euro\",\"Units\":\"EUR\"},{\"CountryCurrency\":\"Fijian Dollar\",\"Units\":\"FJD\"},{\"CountryCurrency\":\"British Pound Sterling\",\"Units\":\"GBP\"},{\"CountryCurrency\":\"Ghana Cedi\",\"Units\":\"GHS\"},{\"CountryCurrency\":\"Gambian Dalasi\",\"Units\":\"GMD\"},{\"CountryCurrency\":\"Guatemalan Quetzal\",\"Units\":\"GTQ\"},{\"CountryCurrency\":\"Hong Kong Dollar\",\"Units\":\"HKD\"},{\"CountryCurrency\":\"Croatian Kuna\",\"Units\":\"HRK\"},{\"CountryCurrency\":\"Hungarian Forint\",\"Units\":\"HUF\"},{\"CountryCurrency\":\"Indonesian Rupiah\",\"Units\":\"IDR\"},{\"CountryCurrency\":\"Israeli Sheqel\",\"Units\":\"ILS\"},{\"CountryCurrency\":\"Indian Rupee\",\"Units\":\"INR\"},{\"CountryCurrency\":\"Icelandic Krona\",\"Units\":\"ISK\"},{\"CountryCurrency\":\"Jamaican Dollar\",\"Units\":\"JMD\"},{\"CountryCurrency\":\"Jordanian Dinar\",\"Units\":\"JOD\"},{\"CountryCurrency\":\"Japanese Yen\",\"Units\":\"JPY\"},{\"CountryCurrency\":\"Kenyan Shilling\",\"Units\":\"KES\"},{\"CountryCurrency\":\"Cambodian Riel\",\"Units\":\"KHR\"},{\"CountryCurrency\":\"South Korean Won\",\"Units\":\"KRW\"},{\"CountryCurrency\":\"Kuwaiti Dinar\",\"Units\":\"KWD\"},{\"CountryCurrency\":\"Lao Kip\",\"Units\":\"LAK\"},{\"CountryCurrency\":\"Lebanese Pound\",\"Units\":\"LBP\"},{\"CountryCurrency\":\"Sri Lankan Rupee\",\"Units\":\"LKR\"},{\"CountryCurrency\":\"Lithuanian Litas\",\"Units\":\"LTL\"},{\"CountryCurrency\":\"Moroccan Dirham\",\"Units\":\"MAD\"},{\"CountryCurrency\":\"Moldovan Leu\",\"Units\":\"MDL\"},{\"CountryCurrency\":\"Malagasy Ariary\",\"Units\":\"MGA\"},{\"CountryCurrency\":\" Macedonian Denar\",\"Units\":\"MKD\"},{\"CountryCurrency\":\"Mauritian Rupee\",\"Units\":\"MUR\"},{\"CountryCurrency\":\"Maldivian Rufiyaa\",\"Units\":\"MVR\"},{\"CountryCurrency\":\"Mexican Peso\",\"Units\":\"MXN\"},{\"CountryCurrency\":\"Malaysian Ringgit\",\"Units\":\"MYR\"},{\"CountryCurrency\":\"Namibian Dollar\",\"Units\":\"NAD\"},{\"CountryCurrency\":\"Nigerian Naira\",\"Units\":\"NGN\"},{\"CountryCurrency\":\" Norwegian Krone\",\"Units\":\"NOK\"},{\"CountryCurrency\":\"Nepalese Rupee\",\"Units\":\"NPR\"},{\"CountryCurrency\":\"New Zealand Dollar\",\"Units\":\"NZD\"},{\"CountryCurrency\":\"Omani Rial\",\"Units\":\"OMR\"},{\"CountryCurrency\":\"Panamanian Balboa\",\"Units\":\"PAB\"},{\"CountryCurrency\":\"Peruvian Sol\",\"Units\":\"PEN\"},{\"CountryCurrency\":\"Philippine Peso\",\"Units\":\"PHP\"},{\"CountryCurrency\":\"Pakistani Rupee\",\"Units\":\"PKR\"},{\"CountryCurrency\":\"Polish Zloty\",\"Units\":\"PLN\"},{\"CountryCurrency\":\"Paraguayan Guaraní\",\"Units\":\"PYG\"},{\"CountryCurrency\":\"Qatari Riyal\",\"Units\":\"QAR\"},{\"CountryCurrency\":\"Romanian Leu\",\"Units\":\"RON\"},{\"CountryCurrency\":\"Serbian Dinar\",\"Units\":\"RSD\"},{\"CountryCurrency\":\"Russian Rouble\",\"Units\":\"RUB\"},{\"CountryCurrency\":\"Saudi Riyal\",\"Units\":\"SAR\"},{\"CountryCurrency\":\"Seychellois Rupee\",\"Units\":\"SCR\"},{\"CountryCurrency\":\"Swedish Krona\",\"Units\":\"SEK\"},{\"CountryCurrency\":\"Singapore Dollar\",\"Units\":\"SGD\"},{\"CountryCurrency\":\"Syrian Pound\",\"Units\":\"SYP\"},{\"CountryCurrency\":\"Thai Baht\",\"Units\":\"THB\"},{\"CountryCurrency\":\"Tunisian Dinar\",\"Units\":\"TND\"},{\"CountryCurrency\":\"Turkish Lira\",\"Units\":\"TRY\"},{\"CountryCurrency\":\"Taiwanese Dollar\",\"Units\":\"TWD\"},{\"CountryCurrency\":\"Ukraine Hryvnia\",\"Units\":\"UAH\"},{\"CountryCurrency\":\"Ugandan Shilling\",\"Units\":\"UGX\"},{\"CountryCurrency\":\"United States Dollar\",\"Units\":\"USD\"},{\"CountryCurrency\":\"Uruguayan Peso\",\"Units\":\"UYU\"},{\"CountryCurrency\":\"Venezuelan Bolívar\",\"Units\":\"VEF\"},{\"CountryCurrency\":\"Vietnamese Dong\",\"Units\":\"VND\"},{\"CountryCurrency\":\"Central African Franc\",\"Units\":\"XAF\"},{\"CountryCurrency\":\"East Caribbean Dollar\",\"Units\":\"XCD\"},{\"CountryCurrency\":\"West African Franc\",\"Units\":\"XOF\"},{\"CountryCurrency\":\"CFP Franc\",\"Units\":\"XPF\"},{\"CountryCurrency\":\"South African Rand\",\"Units\":\"ZAR\"}]}");
+       JSONObject jsonObject = (JSONObject) obj;
+       JSONArray units = (JSONArray) jsonObject.get("units");
+       for(int i=0; i<units.size();i++)
+       {
+           JSONObject currency=(JSONObject) units.get(i);
+           
+           jComboBox1.addItem(currency.get("Units")); 
+           jComboBox2.addItem(currency.get("Units")); 
+       }
+        }  catch (ParseException e) {
+		e.printStackTrace();
+	}
     }
+    
+ 
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -179,14 +210,16 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
                 new CurrencyConverterUI().setVisible(true);
             }
         });
-        try
-        {
-           URL conversionURL = new URL("http://themoneyconverter.com/rss-feed/AED/rss.xml");
-        }
-        catch(MalformedURLException e)
-         {
-             System.out.print(e);
-         }
+         
+//        try
+//        {
+//           URL conversionURL = new URL("http://themoneyconverter.com/rss-feed/AED/rss.xml");
+//        }
+//        catch(MalformedURLException e)
+//         {
+//             System.out.print(e);
+//         }
+
 
     }
 
@@ -205,4 +238,5 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+   
 }
