@@ -2,12 +2,11 @@ package currencyconverter;
 import java.net.URL;
 import java.util.Iterator;
 import java.net.MalformedURLException; 
-//import com.sun.syndication.feed.synd.SyndEntry;
-//import com.sun.syndication.feed.synd.SyndFeed;
-//import com.sun.syndication.io.SyndFeedInput;
-//import com.sun.syndication.io.XmlReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import com.sun.syndication.feed.synd.SyndEntry;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.io.SyndFeedInput;
+import com.sun.syndication.io.XmlReader;
+import com.sun.syndication.io.FeedException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -35,7 +34,47 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
           @Override
          public void actionPerformed(ActionEvent e)
            {
-               System.out.println("Calculate");
+             jLabel6.setText("");
+             XmlReader reader=null;
+             try{
+                    URL url = new URL("http://themoneyconverter.com/rss-feed/"+jComboBox1.getSelectedItem()+"/rss.xml");
+                    reader=new XmlReader(url);
+                    SyndFeed feed=new SyndFeedInput().build(reader);
+                    for(Iterator i=feed.getEntries().iterator(); i.hasNext();)
+                    {
+                        SyndEntry entry = (SyndEntry) i.next();
+                        String[] codes = entry.getTitle().split("/");
+                        if(codes[0].equals(jComboBox2.getSelectedItem()))
+                        {
+                           System.out.println(entry.getTitle());
+                           String[] exchange=entry.getDescription().getValue().split("=");
+                           String[] conversionFrom=exchange[0].split(" ");
+                           String[] conversionTo=exchange[1].split(" ");
+                           txtResults.setText(conversionTo[1]);
+                           double currencyFrom=Double.parseDouble(txtFromCurrency.getText());
+                           double currencyExchange=Double.parseDouble(conversionTo[1]);
+                           double result=currencyFrom * currencyExchange;
+                           System.out.println(result);
+                           txtToCurrency.setText(String.valueOf(result));  
+                        }   
+                    }   
+               }
+               catch(MalformedURLException ex)
+                {
+                    System.out.println("Bad Url");
+                }
+                catch(FeedException ex)
+                {
+                    System.out.println("Feed exception");
+                }
+               catch(IOException ex)
+                {
+                    System.out.println("IO Exception");
+                }
+               catch (NumberFormatException ex)
+                {
+                  jLabel6.setText("Please Enter a Number");
+                }
            }
         });
         
@@ -43,8 +82,7 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e)
              {
-                JComboBox comboBox=(JComboBox)e.getSource(); 
-                System.out.println(comboBox.getSelectedItem());
+                 //toDo Update From Currency String
              }
         });
         
@@ -52,8 +90,7 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e)
              {
-                JComboBox comboBox=(JComboBox)e.getSource(); 
-                System.out.println(comboBox.getSelectedItem());
+                 //toDo UPdate To Currency String
              }
         });
         
@@ -62,6 +99,7 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
         jComboBox2.removeAllItems();
         txtFromCurrency.setText("");
         txtToCurrency.setText("");
+        txtToCurrency.setEditable(false);
         txtResults.setText("");
         Path path=Paths.get("currency.json");
         try
@@ -79,9 +117,10 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
             }
         }catch(IOException e) {
             System.out.println(e);
-        }  catch (ParseException e) {
+        }catch (ParseException e) {
             e.printStackTrace();
 	}
+        
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -102,6 +141,9 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         txtResults = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         menuFile = new javax.swing.JMenu();
         menuUpdate = new javax.swing.JMenu();
@@ -125,11 +167,13 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
         jLabel2.setToolTipText("");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel3.setText("Result:");
+        jLabel3.setText("Exchange Rate:");
 
         txtResults.setText("jTextField3");
 
         jButton1.setText("Convert");
+
+        jLabel6.setForeground(new java.awt.Color(255, 0, 51));
 
         menuFile.setText("File");
         jMenuBar1.add(menuFile);
@@ -149,30 +193,39 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(44, Short.MAX_VALUE)
+                        .addContainerGap(47, Short.MAX_VALUE)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(81, 81, 81)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txtToCurrency, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
-                                        .addComponent(txtFromCurrency)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jComboBox1, 0, 88, Short.MAX_VALUE)
-                                    .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGap(81, 81, 81)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                .addComponent(jLabel4)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                    .addComponent(txtToCurrency, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+                                                    .addComponent(txtFromCurrency))
+                                                .addComponent(jLabel5)))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(jComboBox1, 0, 88, Short.MAX_VALUE)
+                                            .addComponent(jComboBox2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(44, 44, 44)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(34, 34, 34)
                                 .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(txtResults, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 78, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
-                .addGap(118, 118, 118)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(81, 81, 81)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 275, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -180,23 +233,29 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFromCurrency, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtToCurrency, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                    .addComponent(jComboBox2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addComponent(jLabel5)
+                .addGap(2, 2, 2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtToCurrency, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(txtResults, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(37, 37, 37))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
@@ -247,6 +306,9 @@ public class CurrencyConverterUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JMenu menuExit;
